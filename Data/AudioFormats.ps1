@@ -1,15 +1,17 @@
 # ==========================================================
 # YTDLP-Executer v2.0
 # Audio Formats Registry
+# Ordered Dictionary Version
 # ==========================================================
 
-$script:YTDLPAudioFormats = @(
+$script:YTDLPAudioFormats = [ordered]@{
 
-    @{
+
+    1 = @{
         ID          = 1
         Name        = "Best"
         Label       = "Best Audio"
-        Description = "Download the best available audio stream"
+        Description = "Download highest available audio stream"
         Value       = "ba"
         Extension   = ""
         Lossless    = $false
@@ -18,12 +20,13 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    2 = @{
         ID          = 2
         Name        = "Original"
         Label       = "Original Audio"
-        Description = "Keep original audio codec without conversion"
-        Value       = ""
+        Description = "Keep original audio without conversion"
+        Value       = "original"
         Extension   = ""
         Lossless    = $false
         Convert     = $false
@@ -31,11 +34,12 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    3 = @{
         ID          = 3
         Name        = "MP3"
         Label       = "MP3"
-        Description = "MPEG Layer III"
+        Description = "MPEG Layer III compressed audio"
         Value       = "mp3"
         Extension   = ".mp3"
         Lossless    = $false
@@ -44,10 +48,11 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    4 = @{
         ID          = 4
         Name        = "FLAC"
-        Label       = "FLAC (Lossless)"
+        Label       = "FLAC Lossless"
         Description = "Free Lossless Audio Codec"
         Value       = "flac"
         Extension   = ".flac"
@@ -57,11 +62,12 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    5 = @{
         ID          = 5
         Name        = "WAV"
         Label       = "WAV"
-        Description = "Waveform Audio"
+        Description = "Uncompressed waveform audio"
         Value       = "wav"
         Extension   = ".wav"
         Lossless    = $true
@@ -70,7 +76,8 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    6 = @{
         ID          = 6
         Name        = "AAC"
         Label       = "AAC"
@@ -83,11 +90,12 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    7 = @{
         ID          = 7
         Name        = "M4A"
         Label       = "M4A"
-        Description = "Apple MPEG-4 Audio"
+        Description = "MPEG-4 Audio"
         Value       = "m4a"
         Extension   = ".m4a"
         Lossless    = $false
@@ -96,11 +104,12 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    8 = @{
         ID          = 8
         Name        = "OPUS"
         Label       = "Opus"
-        Description = "Opus Audio Codec"
+        Description = "Opus audio codec"
         Value       = "opus"
         Extension   = ".opus"
         Lossless    = $false
@@ -109,11 +118,12 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    9 = @{
         ID          = 9
         Name        = "VORBIS"
         Label       = "Vorbis"
-        Description = "Ogg Vorbis"
+        Description = "Ogg Vorbis audio"
         Value       = "vorbis"
         Extension   = ".ogg"
         Lossless    = $false
@@ -122,10 +132,11 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    10 = @{
         ID          = 10
         Name        = "ALAC"
-        Label       = "ALAC (Lossless)"
+        Label       = "ALAC Lossless"
         Description = "Apple Lossless Audio Codec"
         Value       = "alac"
         Extension   = ".m4a"
@@ -135,7 +146,8 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-    @{
+
+    11 = @{
         ID          = 11
         Name        = "AIFF"
         Label       = "AIFF"
@@ -148,4 +160,4 @@ $script:YTDLPAudioFormats = @(
         Enabled     = $true
     }
 
-)
+}
