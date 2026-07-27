@@ -1,23 +1,20 @@
 # ==========================================================
 # YTDLP-Executer v2.0
 # Video Qualities Registry
-# Ordered Dictionary Version
 # ==========================================================
 
 $script:YTDLPQualities = [ordered]@{
-
 
     1 = @{
         ID          = 1
         Name        = "Best"
         Label       = "Best Available"
-        Description = "Download highest available video and audio quality"
+        Description = "Download highest available video quality"
         Value       = "bv*+ba"
         Height      = 0
         Default     = $true
         Enabled     = $true
     }
-
 
     2 = @{
         ID          = 2
@@ -30,7 +27,6 @@ $script:YTDLPQualities = [ordered]@{
         Enabled     = $true
     }
 
-
     3 = @{
         ID          = 3
         Name        = "2160"
@@ -41,7 +37,6 @@ $script:YTDLPQualities = [ordered]@{
         Default     = $false
         Enabled     = $true
     }
-
 
     4 = @{
         ID          = 4
@@ -54,7 +49,6 @@ $script:YTDLPQualities = [ordered]@{
         Enabled     = $true
     }
 
-
     5 = @{
         ID          = 5
         Name        = "1080"
@@ -65,7 +59,6 @@ $script:YTDLPQualities = [ordered]@{
         Default     = $false
         Enabled     = $true
     }
-
 
     6 = @{
         ID          = 6
@@ -78,7 +71,6 @@ $script:YTDLPQualities = [ordered]@{
         Enabled     = $true
     }
 
-
     7 = @{
         ID          = 7
         Name        = "480"
@@ -89,7 +81,6 @@ $script:YTDLPQualities = [ordered]@{
         Default     = $false
         Enabled     = $true
     }
-
 
     8 = @{
         ID          = 8
@@ -102,7 +93,6 @@ $script:YTDLPQualities = [ordered]@{
         Enabled     = $true
     }
 
-
     9 = @{
         ID          = 9
         Name        = "240"
@@ -113,7 +103,6 @@ $script:YTDLPQualities = [ordered]@{
         Default     = $false
         Enabled     = $true
     }
-
 
     10 = @{
         ID          = 10
