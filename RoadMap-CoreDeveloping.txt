@@ -1,0 +1,19 @@
+YTDLP-Executer-V2
+│
+├── Core
+│   ├── DataLoader.ps1   <-- جدید
+│   ├── Builder.ps1
+│   ├── Executor.ps1
+│   ├── Validator.ps1
+│   └── UI.ps1
+│
+├── Data
+│   ├── Tasks.ps1
+│   ├── Qualities.ps1
+│   ├── Containers.ps1
+│   ├── AudioFormats.ps1
+│   └── SubtitleLanguages.ps1
+│
+├── Menus
+│
+└── Tests
