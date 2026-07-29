@@ -6,7 +6,6 @@
 
 function Import-YTDLPData {
 
-
     param(
         [string]$RootPath
     )
@@ -15,13 +14,13 @@ function Import-YTDLPData {
     Write-Host ""
     Write-Host "======================================" -ForegroundColor Cyan
     Write-Host " Loading YTDLP Data Layer"
-    Write-Host "======================================"
+    Write-Host "======================================" -ForegroundColor Cyan
     Write-Host ""
 
 
 
     # ------------------------------------------------------
-    # Detect Project Root
+    # Detect Root
     # ------------------------------------------------------
 
     if (-not $RootPath) {
@@ -40,20 +39,30 @@ function Import-YTDLPData {
 
 
 
-    if (-not (Test-Path $DataPath)) {
+    if (!(Test-Path $DataPath)) {
 
-        throw "
-Data directory not found:
-
-$DataPath
-"
+        throw "Data directory not found: $DataPath"
 
     }
 
 
 
     # ------------------------------------------------------
-    # Data Registry Files
+    # Clear Old Data
+    # ------------------------------------------------------
+
+    Remove-Variable YTDLPTasks -ErrorAction SilentlyContinue
+    Remove-Variable YTDLPQualities -ErrorAction SilentlyContinue
+    Remove-Variable YTDLPContainers -ErrorAction SilentlyContinue
+    Remove-Variable YTDLPAudioFormats -ErrorAction SilentlyContinue
+    Remove-Variable YTDLPSubtitleLanguages -ErrorAction SilentlyContinue
+
+    Remove-Variable YTDLPContext -Global -ErrorAction SilentlyContinue
+
+
+
+    # ------------------------------------------------------
+    # Load Data Files
     # ------------------------------------------------------
 
     $DataFiles = @(
@@ -69,7 +78,7 @@ $DataPath
 
 
 
-    foreach ($file in $DataFiles) {
+    foreach($file in $DataFiles) {
 
 
         $FilePath = Join-Path `
@@ -78,14 +87,9 @@ $DataPath
 
 
 
-        if (-not (Test-Path $FilePath)) {
+        if(!(Test-Path $FilePath)) {
 
-
-            throw "
-Missing Data File:
-
-$FilePath
-"
+            throw "Missing Data File: $FilePath"
 
         }
 
@@ -99,19 +103,23 @@ $FilePath
 
 
     # ------------------------------------------------------
-    # Create Context
+    # Build Context From Loaded Variables
     # ------------------------------------------------------
 
-    $script:YTDLPContext = [ordered]@{
+    $Context = [ordered]@{
 
 
         Tasks = $script:YTDLPTasks
 
+
         Qualities = $script:YTDLPQualities
+
 
         Containers = $script:YTDLPContainers
 
+
         AudioFormats = $script:YTDLPAudioFormats
+
 
         SubtitleLanguages = $script:YTDLPSubtitleLanguages
 
@@ -124,52 +132,41 @@ $FilePath
     # Validate Context
     # ------------------------------------------------------
 
-    Test-YTDLPDataIntegrity
+    Test-YTDLPDataIntegrity `
+        -Context $Context
+
+
+
+    # ------------------------------------------------------
+    # Export Context
+    # ------------------------------------------------------
+
+    $Global:YTDLPContext = $Context
 
 
 
     Write-Host ""
     Write-Host "======================================" -ForegroundColor Green
     Write-Host " YTDLP Context Initialized"
-    Write-Host "======================================"
+    Write-Host "======================================" -ForegroundColor Green
     Write-Host ""
 
 
 
-    Write-Host (
-        "[OK] Tasks              : {0}" `
-        -f $YTDLPContext.Tasks.Count
-    )
-
-    Write-Host (
-        "[OK] Qualities          : {0}" `
-        -f $YTDLPContext.Qualities.Count
-    )
-
-    Write-Host (
-        "[OK] Containers         : {0}" `
-        -f $YTDLPContext.Containers.Count
-    )
-
-    Write-Host (
-        "[OK] Audio Formats      : {0}" `
-        -f $YTDLPContext.AudioFormats.Count
-    )
-
-    Write-Host (
-        "[OK] Subtitle Languages : {0}" `
-        -f $YTDLPContext.SubtitleLanguages.Count
-    )
+    Write-Host "[OK] Tasks              : $($Context.Tasks.Count)"
+    Write-Host "[OK] Qualities          : $($Context.Qualities.Count)"
+    Write-Host "[OK] Containers         : $($Context.Containers.Count)"
+    Write-Host "[OK] Audio Formats      : $($Context.AudioFormats.Count)"
+    Write-Host "[OK] Subtitle Languages : $($Context.SubtitleLanguages.Count)"
 
 
-    Write-Host ""
 
 }
 
 
 
 # ==========================================================
-# Data Validation
+# Validation
 # ==========================================================
 
 
@@ -177,8 +174,11 @@ function Test-YTDLPRegistryIntegrity {
 
 
     param(
+
         [hashtable]$Registry,
-        [string]$RegistryName
+
+        [string]$Name
+
     )
 
 
@@ -189,16 +189,24 @@ function Test-YTDLPRegistryIntegrity {
         if($item.Key -ne $item.Value.ID) {
 
 
-            throw "
-Registry Validation Failed
+            throw @"
 
-Registry : $RegistryName
+======================================
+DATA VALIDATION FAILED
+======================================
 
-Key : $($item.Key)
+Registry : $Name
 
-ID  : $($item.Value.ID)
+Key      : $($item.Key)
 
-"
+ID       : $($item.Value.ID)
+
+Name     : $($item.Value.Name)
+
+======================================
+
+"@
+
 
         }
 
@@ -213,36 +221,45 @@ ID  : $($item.Value.ID)
 function Test-YTDLPDataIntegrity {
 
 
+    param(
 
-    Test-YTDLPRegistryIntegrity `
-        -Registry $script:YTDLPTasks `
-        -RegistryName "Tasks"
+        [hashtable]$Context
 
-
-
-    Test-YTDLPRegistryIntegrity `
-        -Registry $script:YTDLPQualities `
-        -RegistryName "Qualities"
+    )
 
 
 
     Test-YTDLPRegistryIntegrity `
-        -Registry $script:YTDLPContainers `
-        -RegistryName "Containers"
+        -Registry $Context.Tasks `
+        -Name "Tasks"
 
 
 
     Test-YTDLPRegistryIntegrity `
-        -Registry $script:YTDLPAudioFormats `
-        -RegistryName "AudioFormats"
+        -Registry $Context.Qualities `
+        -Name "Qualities"
 
 
 
     Test-YTDLPRegistryIntegrity `
-        -Registry $script:YTDLPSubtitleLanguages `
-        -RegistryName "SubtitleLanguages"
+        -Registry $Context.Containers `
+        -Name "Containers"
+
+
+
+    Test-YTDLPRegistryIntegrity `
+        -Registry $Context.AudioFormats `
+        -Name "AudioFormats"
+
+
+
+    Test-YTDLPRegistryIntegrity `
+        -Registry $Context.SubtitleLanguages `
+        -Name "SubtitleLanguages"
+
 
 
     Write-Host "[OK] Data Validation Passed" -ForegroundColor Green
+
 
 }
